@@ -1,52 +1,47 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class Form extends Component {
-   initialState = {
-      name: '',
-      job: ''
-   }
+const Form = props => {
+  const initialState = {
+    name: '',
+    job: ''
+  }
 
-   state = this.initialState;
+  const [state, setState] = useState(initialState)
+  const { name, job } = state;
 
-   render() {
-      const { name, job } = this.state;
+  const handleChange = event => {
+    const { name, value } = event.target
 
-      return (
-         <form>
-            <label htmlFor="name">Name</label>
-            <input
-               type="text"
-               name="name"
-               id="name"
-               value={name}
-               onChange={this.handleChange} />
-               <label htmlFor="job">Job</label>
-               <input
-                  type="text"
-                  name="job"
-                  id="job"
-                  value={job}
-                  onChange={this.handleChange} />
-               <input
-                  type="button"
-                  value="Submit"
-                  onClick={this.submitForm} />
-         </form>
-      );
-   }
+    setState({ ...state, [name]: value })
+  }
 
-   handleChange = event => {
-      const { name, value } = event.target
-   
-      this.setState({
-         [name]: value
-      })
-   }
+  const submitForm = () => {
+    props.handleSubmit(state)
+    setState(initialState)
+  }
 
-   submitForm = () => {
-      this.props.handleSubmit(this.state)
-      this.setState(this.initialState)
-   }
+  return (
+    <form>
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value={name}
+        onChange={handleChange} />
+      <label htmlFor="job">Job</label>
+      <input
+        type="text"
+        name="job"
+        id="job"
+        value={job}
+        onChange={handleChange} />
+      <input
+        type="button"
+        value="Submit"
+        onClick={submitForm} />
+    </form>
+  );
 }
 
 export default Form;
