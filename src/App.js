@@ -1,28 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from './Table'
 import Form from './Form'
+import axios from 'axios'
 
 const App = props => {
-  const [ state, setState ] = useState({ characters: [] })
+  const [characters, setCharacters] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/users')
+      .then(res => {
+        const characters = res.data.users_list;
+        setCharacters(characters);
+      })
+      .catch(function (error) {
+        //Not handling the error. Just logging into the console.
+        console.log(error);
+      });
+  }, []);
 
   const removeCharacter = index => {
-    const { characters } = state
-
-    setState({
-      characters: characters.filter((character, i) => {
+    setCharacters(
+      characters.filter((character, i) => {
         return i !== index
-      }),
-    })
+      })
+    )
   }
 
   const handleSubmit = character => {
-    setState({ characters: [...this.state.characters, character] })
+    setCharacters([...characters, character])
   }
 
   return (
     <div className="container">
-      <Table characterData={state.characters} removeCharacter={removeCharacter} />
-      <Form handleSubmit={handleSubmit}/>
+      <Table characterData={characters} removeCharacter={removeCharacter} />
+      <Form handleSubmit={handleSubmit} />
     </div>
   );
 }
