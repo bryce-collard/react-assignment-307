@@ -27,7 +27,23 @@ const App = props => {
   }
 
   const handleSubmit = character => {
-    setCharacters([...characters, character])
+    makePostCall(character).then(callResult => {
+      if (callResult === true) {
+        setCharacters([...characters, character]);
+      }
+    });
+  }
+
+  async function makePostCall(character) {
+    return axios.post('http://localhost:5000/users', character)
+     .then(function (response) {
+       console.log(response);
+       return (response.status === 200);
+     })
+     .catch(function (error) {
+       console.log(error);
+       return false;
+     });
   }
 
   return (
