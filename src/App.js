@@ -38,7 +38,7 @@ const App = props => {
     return axios.post('http://localhost:5000/users', character)
      .then(function (response) {
        console.log(response);
-       return (response.status === 200);
+       return (response.status === 201);
      })
      .catch(function (error) {
        console.log(error);
