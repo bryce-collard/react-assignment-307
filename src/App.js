@@ -18,32 +18,49 @@ const App = props => {
       });
   }, []);
 
-  const removeCharacter = index => {
-    setCharacters(
-      characters.filter((character, i) => {
-        return i !== index
+  const removeCharacter = id => {
+    makeDeleteCall(id).then(success => {
+      if (success) {
+        setCharacters(
+          characters.filter((character, i) => {
+            return character.id !== id
+          })
+        )
+      }
+    })
+
+  }
+
+  async function makeDeleteCall(id) {
+    return axios.delete(`http://localhost:5000/users/${id}`)
+      .then(function (response) {
+        console.log(response);
+        return (response.status === 200);
       })
-    )
+      .catch(function (error) {
+        console.log(error);
+        return false;
+      })
   }
 
   const handleSubmit = character => {
-    makePostCall(character).then(callResult => {
-      if (callResult === true) {
-        setCharacters([...characters, character]);
+    makePostCall(character).then(newCharacter => {
+      if (newCharacter) {
+        setCharacters([...characters, newCharacter]);
       }
     });
   }
 
   async function makePostCall(character) {
     return axios.post('http://localhost:5000/users', character)
-     .then(function (response) {
-       console.log(response);
-       return (response.status === 201);
-     })
-     .catch(function (error) {
-       console.log(error);
-       return false;
-     });
+      .then(function (response) {
+        console.log(response);
+        return response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return false;
+      });
   }
 
   return (
