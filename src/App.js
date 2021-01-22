@@ -16,7 +16,7 @@ const App = props => {
   }
 
   const handleSubmit = character => {
-    setState({ characters: [...this.state.characters, character] })
+    setState({ characters: [...state.characters, character] })
   }
 
   return (
