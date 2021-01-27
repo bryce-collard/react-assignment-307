@@ -23,7 +23,7 @@ const App = props => {
       if (success) {
         setCharacters(
           characters.filter((character, i) => {
-            return character.id !== id
+            return character._id !== id
           })
         )
       }
@@ -35,7 +35,7 @@ const App = props => {
     return axios.delete(`http://localhost:5000/users/${id}`)
       .then(function (response) {
         console.log(response);
-        return (response.status === 200);
+        return (response.status === 204);
       })
       .catch(function (error) {
         console.log(error);
